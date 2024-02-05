@@ -12,24 +12,24 @@ cd blockchain-wallet-app
 # Initialize a new Node.js project
 npm init -y
 
-2. Install Dependencies:
+ 2. Install Dependencies:
 Install necessary Node.js packages for the backend
 
 BASH
 npm install express node-fetch bitcoinjs-lib
 
-3.(Node.js with Express):
+ 3. Backend (Node.js with Express):
    Is server.js
    
-4. Frontend (HTML, CSS, JavaScript):
+ 4. Frontend (HTML, CSS, JavaScript):
    Is index.html, styles.css and script.js
 
    When you have all the files in the directory
 
- 5. Run the App:
+  5. Run the App:
     
-BASH
-node server.js
+   BASH
+   node server.js
 
 Visit http://localhost:3000 in your browser to interact with your blockchain wallet app. The app allows you to mine fake Bitcoin and transfer them to another wallet address.
 
