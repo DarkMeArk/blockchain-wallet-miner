@@ -79,4 +79,69 @@ For actual blockchain integration, you'll need to replace the simulated logic wi
 
 
 
+Using blockchain APIs or SDKs allows you to interact with blockchain networks more efficiently and reliably. In this example, I'll guide you through integrating with the Blockchair API, a popular blockchain explorer API, for obtaining transaction data and calculating the balance. Note that for a production application, you might want to explore additional APIs or use blockchain SDKs for more advanced functionalities.
+
+1. Sign Up for Blockchair API Key:
+Visit the Blockchair API website and sign up for an API key. This key will be used to authenticate your requests to the Blockchair API.
+
+2. Modify the Backend (Node.js):
+Update the server.js file to include the Blockchair API key and handle the balance retrieval using the Blockchair API.
+
+javascript
+Copy code
+// server.js
+const express = require('express');
+const fetch = require('node-fetch');
+const bitcoin = require('bitcoinjs-lib');
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+
+const apiKey = 'YOUR_BLOCKCHAIR_API_KEY'; // Replace with your Blockchair API key
+let balance = 0;
+const privateKey = bitcoin.ECPair.makeRandom().toWIF();
+
+app.get('/getBalance', async (req, res) => {
+    try {
+        // Use Blockchair API to get transaction history
+        const blockChairApiUrl = `https://api.blockchair.com/bitcoin/dashboards/address/${walletAddress}?key=${apiKey}`;
+        const response = await fetch(blockChairApiUrl);
+        const data = await response.json();
+
+        // Calculate the balance
+        balance = 0;
+        data.data[walletAddress].transactions.forEach(transaction => {
+            if (transaction.sender) {
+                // Wallet sent Bitcoin
+                balance -= transaction.value;
+            } else {
+                // Wallet received Bitcoin
+                balance += transaction.value;
+            }
+        });
+
+        res.json({ balance });
+    } catch (error) {
+        console.error('Error during balance retrieval:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+});
+
+// ... (rest of the code remains the same)
+Replace 'YOUR_BLOCKCHAIR_API_KEY' with the actual Blockchair API key.
+
+3. Test the Updated Backend:
+Ensure your server is running (node server.js), and test the /getBalance endpoint by navigating to http://localhost:3000/getBalance in your browser or using a tool like Postman.
+
+Note:
+Always keep your API keys secure and never expose them publicly.
+Check the terms of use for the Blockchair API to understand usage limitations and restrictions.
+This example assumes that the Blockchair API structure remains the same. Be aware that APIs might change, and it's good practice to handle potential changes gracefully in a production application.
+By integrating with blockchain APIs or SDKs, you gain access to real-time and accurate blockchain data, enhancing the reliability and functionality of your blockchain wallet app.
+
+
+
+
+
 
